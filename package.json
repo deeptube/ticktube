@@ -50,5 +50,8 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@fortawesome/vue-fontawesome": "^0.1.9",
+    "swiper": "^5.3.8",
+    "vue": "^2.6.11",
+    "vue-awesome-swiper": "^4.1.1"
   }
 }
