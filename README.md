@@ -1,22 +1,13 @@
-# Webpack Study Template
+# TickTube
 
-Webpack勉強用のリポジトリ
+YouTubeの動画をTickTokライクなUIで閲覧できるViewer :tv:
 
-今のところできること
+![demo](https://github.com/Madogiwa0124/ticktube/blob/master/assets/demo.gif)
 
-* digest付きのcss、jsのビルド
-  - 指定したディレクトリ(`/src/javascripts/entries`)配下のjs,tsファイルを自動的にエントリーとする
-    例) /entries/foo.ts => { foo: "/entries/foo.ts" }
-* scssのcssへのビルド
-* babelを通したjsのビルド
-* htmlのビルド
-  - エントリーファイルと自動的に結びつくように
-    例) pages/home.htmlだったらentries/home.jsが読み込まれる
-* typescriptのビルド
-* webpack-dev-serverでのビルド
-* vueのビルド
-* eslint(`eslint-plugin-vue`, `@typescript-eslint/eslint-plugin`)による静的解析
-* pritterによるコードフォーマット
+GETパラメーターでYouTubeDataAPIのAPIキーを`apiKey`として渡してください。
+検索結果から表示する動画の絞り込みを行う場合は検索キーを`keyword`を設定してください。
+
+例) http://localhost:8080/?keyword=NEWSapiKey=FooBarBaz
 
 # コマンド
 
