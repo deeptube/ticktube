@@ -1,6 +1,11 @@
 <template>
   <div class="video-list">
-    <swiper :options="swiperOptions" @sliderMove="handleSliderMove" @slideChangeTransitionEnd="handleSlideChange">
+    <swiper
+      :options="swiperOptions"
+      @sliderMove="handleSliderMove"
+      @slideChangeTransitionEnd="slideChangeTransitionEnd"
+      @reachEnd="handleReachEnd"
+    >
       <swiper-slide v-for="videoItem in videoItems" :key="videoItem.id.videoId">
         <video-item :video-item="videoItem" />
       </swiper-slide>
@@ -21,6 +26,7 @@ const PAUSE_VIDEO_MESSAGE_CMD = '{"event":"command","func":"pauseVideo","args":"
 
 interface Data {
   client: ApiClient;
+  nextPageToken: string;
   videoItems: SearchResultItem[];
   swiperOptions: object;
   keyword: string;
@@ -40,6 +46,7 @@ export default Vue.extend({
       videoItems: [],
       client: new ApiClient(params.get("apiKey") || ""),
       keyword: params.get("keyword") || "",
+      nextPageToken: "",
       swiperOptions: {
         pagination: {
           el: ".swiper-pagination",
@@ -50,20 +57,27 @@ export default Vue.extend({
     };
   },
   mounted: async function (): Promise<void> {
-    this.client.search(this.keyword).then((ret: SearchResult) => {
-      this.videoItems = ret.items;
-    });
+    await this.getSerchResult();
   },
   methods: {
+    getSerchResult: function (): void {
+      this.client.search(this.keyword, this.nextPageToken).then((ret: SearchResult) => {
+        if (ret.nextPageToken) this.nextPageToken = ret.nextPageToken;
+        this.videoItems.push(...ret.items);
+      });
+    },
     handleSliderMove: function (): void {
       const target = this.$el.querySelector(CURRENT_PLAYER_SELECTOR);
       const playerWindow = (target as HTMLIFrameElement).contentWindow;
       playerWindow?.postMessage(PAUSE_VIDEO_MESSAGE_CMD, "*");
     },
-    handleSlideChange: function (): void {
+    slideChangeTransitionEnd: function (): void {
       const target = this.$el.querySelector(CURRENT_PLAYER_SELECTOR);
       const playerWindow = (target as HTMLIFrameElement).contentWindow;
       playerWindow?.postMessage(PLAY_VIDEO_MESSAGE_CMD, "*");
+    },
+    handleReachEnd: function (): void {
+      this.getSerchResult();
     },
   },
 });

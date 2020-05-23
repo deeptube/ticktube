@@ -10,11 +10,12 @@ export class ApiClient {
     this.apiKey = apiKey;
   }
 
-  async search(keyword: string, mock = false): Promise<SearchResult> {
+  async search(keyword: string, pageToken = "", mock = false): Promise<SearchResult> {
     if (mock) {
       return this.mockSerchResponse;
     } else {
-      const endpoint = `${this.END_POINT}/search?type=video&part=snippet&q=${keyword}&key=${this.apiKey}`;
+      let endpoint = `${this.END_POINT}/search?type=video&part=snippet&q=${keyword}&key=${this.apiKey}`;
+      if (pageToken) endpoint = endpoint + `&pageToken=${pageToken}`;
       const response: Response = await fetch(endpoint);
       const result: SearchResult = (await response.json()) as SearchResult;
       return result;
