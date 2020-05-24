@@ -3,37 +3,39 @@
     <div class="video-item-player">
       <player :video-id="videoItem.id.videoId" />
     </div>
-    <h2 class="video-item-channel">
-      {{ "@" + videoItem.snippet.channelTitle }}
-    </h2>
-    <h2 class="video-item-title">
-      {{ videoItem.snippet.title }}
-    </h2>
-    <p class="video-item-description">
-      {{ videoItem.snippet.description }}
-    </p>
-    <section class="video-item-share">
-      <h2>この動画を共有する</h2>
-      <a class="video-item-share-url" :href="`https://youtu.be/${videoItem.id.videoId}`">
-        {{ `https://youtu.be/${videoItem.id.videoId}` }}
-      </a>
-      <div class="video-item-share-buttons">
-        <a :href="twitterShareLink(videoItem)" class="video-item-share-button" target="_blank">
-          <font-awesome-icon :icon="['fab', 'twitter-square']" />
-        </a>
-        <a :href="faceBookShareLink(videoItem)" class="video-item-share-button" target="_blank">
-          <font-awesome-icon :icon="['fab', 'facebook-square']" />
-        </a>
-        <a class="video-item-share-button" @click="copyVideoUrl('.video-item-share-url')">
-          <font-awesome-icon :icon="['fas', 'copy']" />
-        </a>
-      </div>
-    </section>
-    <div class="video-item-next-video-msg">
-      <p>
-        スワイプして次の動画を見る
-        <font-awesome-icon :icon="['fas', 'chevron-circle-down']" />
+    <div class="video-item-info">
+      <h2 class="video-item-channel">
+        {{ "@" + videoItem.snippet.channelTitle }}
+      </h2>
+      <h2 class="video-item-title">
+        {{ videoItem.snippet.title }}
+      </h2>
+      <p class="video-item-description">
+        {{ videoItem.snippet.description }}
       </p>
+      <section class="video-item-share">
+        <h3>この動画を共有する</h3>
+        <a class="video-item-share-url" :href="`https://youtu.be/${videoItem.id.videoId}`">
+          {{ `https://youtu.be/${videoItem.id.videoId}` }}
+        </a>
+        <div class="video-item-share-buttons">
+          <a :href="twitterShareLink(videoItem)" class="video-item-share-button" target="_blank">
+            <font-awesome-icon :icon="['fab', 'twitter-square']" />
+          </a>
+          <a :href="faceBookShareLink(videoItem)" class="video-item-share-button" target="_blank">
+            <font-awesome-icon :icon="['fab', 'facebook-square']" />
+          </a>
+          <a class="video-item-share-button" @click="copyVideoUrl('.video-item-share-url')">
+            <font-awesome-icon :icon="['fas', 'copy']" />
+          </a>
+        </div>
+      </section>
+      <div class="video-item-next-video-msg">
+        <p>
+          スワイプして次の動画を見る
+          <font-awesome-icon :icon="['fas', 'chevron-circle-down']" />
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -76,49 +78,62 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .video-item {
   color: #ffffff;
-  font-size: 28px;
+  .video-item-info {
+    margin: 0.5em;
 
-  .video-item-description {
-    padding: 0px 12px;
-    font-size: 32px;
-  }
-
-  .video-item-share {
-    border-top: 1px solid #ffffff;
-    text-align: center;
-    h2 {
-      font-size: 52px;
-    }
-    a:link {
-      color: #ffffff;
-    }
-    a:visited {
-      color: #ffffff;
-    }
-    a:hover {
-      color: #ffffff;
-    }
-    a:active {
-      color: #ffffff;
-    }
-    .video-item-share-url {
-      font-size: 42px;
+    .video-item-channel {
+      font-size: 0.8em;
     }
 
-    .video-item-share-buttons {
-      font-size: 124px;
+    .video-item-title {
+      font-size: 0.8em;
+      font-weight: bold;
+    }
 
-      .video-item-share-button {
-        display: inline-block;
-        margin: 0px 32px;
+    .video-item-description {
+      font-size: 0.8em;
+    }
+
+    .video-item-share {
+      border-top: 1px solid #ffffff;
+      text-align: center;
+
+      h3 {
+        margin: 0.2em;
+        font-size: 1em;
+      }
+
+      a:link {
+        color: #ffffff;
+      }
+      a:visited {
+        color: #ffffff;
+      }
+      a:hover {
+        color: #ffffff;
+      }
+      a:active {
+        color: #ffffff;
+      }
+      .video-item-share-url {
+        font-size: 0.8em;
+      }
+
+      .video-item-share-buttons {
+        font-size: 1.8em;
+
+        .video-item-share-button {
+          display: inline-block;
+          margin: 0em 1em;
+        }
       }
     }
-  }
 
-  .video-item-next-video-msg {
-    border-top: 1px solid #ffffff;
-    text-align: center;
-    font-size: 62px;
+    .video-item-next-video-msg {
+      border-top: 1px solid #ffffff;
+      text-align: center;
+      font-size: 1em;
+    }
   }
 }
 </style>

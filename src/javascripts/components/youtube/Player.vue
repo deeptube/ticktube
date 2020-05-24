@@ -1,6 +1,6 @@
 <template>
   <div :id="videoId" class="yotube-player">
-    <iframe type="text/html" width="100%" :src="videoSrc()" />
+    <iframe type="text/html" width="100%" :src="videoSrc()" frameborder="0" />
   </div>
 </template>
 <script lang="ts">
