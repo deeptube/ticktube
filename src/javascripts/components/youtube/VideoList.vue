@@ -29,7 +29,6 @@ interface Data {
   nextPageToken: string;
   videoItems: SearchResultItem[];
   swiperOptions: object;
-  keyword: string;
 }
 
 export default Vue.extend({
@@ -38,14 +37,21 @@ export default Vue.extend({
     SwiperSlide,
     VideoItem,
   },
-  props: {},
+  props: {
+    apiKey: {
+      type: String,
+      required: true,
+    },
+    keyword: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  },
   data(): Data {
-    // APIKey等はコードに残さないようにGETパラメーターで設定する方式にしとく
-    const params = new URL(document.location.href).searchParams;
     return {
       videoItems: [],
-      client: new ApiClient(params.get("apiKey") || ""),
-      keyword: params.get("keyword") || "",
+      client: new ApiClient(this.apiKey || ""),
       nextPageToken: "",
       swiperOptions: {
         pagination: {

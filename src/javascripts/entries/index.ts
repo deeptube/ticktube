@@ -1,5 +1,5 @@
 import "@css/index.scss";
-import VideoList from "@js/components/youtube/VideoList.vue";
+import Root from "@js/components/Root.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -12,5 +12,5 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   el: "#vue-root",
-  components: { VideoList },
+  components: { Root },
 });

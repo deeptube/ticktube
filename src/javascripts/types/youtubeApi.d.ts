@@ -1,3 +1,8 @@
+export interface InitFormType {
+  apiKey: string;
+  keyword: string;
+}
+
 export interface SearchResult {
   kind: string;
   etag: string;
