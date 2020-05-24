@@ -2,7 +2,7 @@
   <div class="root">
     <video-list v-if="isPlayable" :api-key="apiKey" :keyword="keyword"></video-list>
     <div v-else class="root-init">
-      <init-form @submit="handleOnSubmit"></init-form>
+      <init-form :submitable="isMobile" @submit="handleOnSubmit"></init-form>
     </div>
   </div>
 </template>
@@ -26,6 +26,9 @@ export default Vue.extend({
   computed: {
     isPlayable: function (): boolean {
       return !!this.apiKey;
+    },
+    isMobile: function (): boolean {
+      return !!navigator.userAgent.match(/iPhone|Android|Mobile/);
     },
   },
   methods: {

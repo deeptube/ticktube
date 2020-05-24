@@ -20,7 +20,7 @@
         <input v-model="keyword" type="text" name="keyword" />
       </div>
       <div class="init-form-item submit">
-        <button @click="submit">
+        <button :disabled="!submitable" @click="submit">
           TickTok Likeに見る🚀
         </button>
       </div>
@@ -32,6 +32,12 @@ import Vue from "vue";
 import { InitFormType } from "@js/types/youtubeApi";
 
 export default Vue.extend({
+  props: {
+    submitable: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data(): InitFormType {
     return {
       apiKey: "",
