@@ -4,10 +4,7 @@ YouTubeの動画をTickTokライクなUIで閲覧できるViewer :tv:
 
 ![demo](https://github.com/Madogiwa0124/ticktube/blob/master/assets/demo.gif)
 
-GETパラメーターでYouTubeDataAPIのAPIキーを`apiKey`として渡してください。
-検索結果から表示する動画の絞り込みを行う場合は検索キーを`keyword`を設定してください。
-
-例) http://localhost:8080/?keyword=NEWSapiKey=FooBarBaz
+最初に表示された画面でYouTubeDataAPIのAPIキーと検索に使うKeyword(任意)を入力してください。
 
 # コマンド
 
