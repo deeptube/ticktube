@@ -13,21 +13,17 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
+import Vue, { PropType } from "vue";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 import "swiper/css/swiper.min.css";
 import VideoItem from "@js/components/youtube/VideoItem.vue";
-import { SearchResult, SearchResultItem } from "@js/types/youtubeApi";
-import { ApiClient } from "@js/services/youtubeDataApi/apiClient";
+import { SearchResultItem } from "@js/types/youtubeApi";
 
 const CURRENT_PLAYER_SELECTOR = ".swiper-slide-active .yotube-player iframe";
 const PLAY_VIDEO_MESSAGE_CMD = '{"event":"command","func":"playVideo","args":""}';
 const PAUSE_VIDEO_MESSAGE_CMD = '{"event":"command","func":"pauseVideo","args":""}';
 
 interface Data {
-  client: ApiClient;
-  nextPageToken: string;
-  videoItems: SearchResultItem[];
   swiperOptions: object;
 }
 
@@ -38,40 +34,20 @@ export default Vue.extend({
     VideoItem,
   },
   props: {
-    apiKey: {
-      type: String,
+    videoItems: {
+      type: Array as PropType<SearchResultItem[]>,
       required: true,
-    },
-    keyword: {
-      type: String,
-      required: false,
-      default: "",
     },
   },
   data(): Data {
     return {
-      videoItems: [],
-      client: new ApiClient(this.apiKey || ""),
-      nextPageToken: "",
       swiperOptions: {
-        pagination: {
-          el: ".swiper-pagination",
-        },
         height: window.innerHeight,
         direction: "vertical",
       },
     };
   },
-  mounted: async function (): Promise<void> {
-    await this.getSerchResult();
-  },
   methods: {
-    getSerchResult: function (): void {
-      this.client.search(this.keyword, this.nextPageToken).then((ret: SearchResult) => {
-        if (ret.nextPageToken) this.nextPageToken = ret.nextPageToken;
-        this.videoItems.push(...ret.items);
-      });
-    },
     handleSliderMove: function (): void {
       const target = this.$el.querySelector(CURRENT_PLAYER_SELECTOR);
       const playerWindow = (target as HTMLIFrameElement).contentWindow;
@@ -83,7 +59,7 @@ export default Vue.extend({
       playerWindow?.postMessage(PLAY_VIDEO_MESSAGE_CMD, "*");
     },
     handleReachEnd: function (): void {
-      this.getSerchResult();
+      this.$emit("reachEnd");
     },
   },
 });
