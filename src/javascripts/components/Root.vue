@@ -1,6 +1,13 @@
 <template>
   <div class="root">
     <div v-if="isPlayable">
+      <loading
+        :active.sync="isLoading"
+        :can-cancel="false"
+        :is-full-page="true"
+        color="#fff"
+        background-color="#000"
+      ></loading>
       <video-list :video-items="videoItems" @reachEnd="handleOnReachEnd"></video-list>
     </div>
     <div v-else class="root-init">
@@ -9,6 +16,8 @@
   </div>
 </template>
 <script lang="ts">
+import "vue-loading-overlay/dist/vue-loading.css";
+import Loading from "vue-loading-overlay";
 import Vue from "vue";
 import VideoList from "@js/components/youtube/VideoList.vue";
 import InitForm from "@js/components/youtube/InitForm.vue";
@@ -19,6 +28,7 @@ interface Data {
   apiKey: string;
   keyword: string;
   nextPageToken: string;
+  isLoading: boolean;
   videoItems: SearchResultItem[];
 }
 
@@ -26,11 +36,13 @@ export default Vue.extend({
   components: {
     VideoList,
     InitForm,
+    Loading,
   },
   data(): Data {
     return {
       apiKey: "",
       keyword: "",
+      isLoading: false,
       nextPageToken: "",
       videoItems: [],
     };
@@ -48,9 +60,14 @@ export default Vue.extend({
   },
   methods: {
     getSerchResult: async function (): Promise<void> {
-      const ret: SearchResult = await this.client.search(this.keyword, this.nextPageToken);
-      if (ret.nextPageToken) this.nextPageToken = ret.nextPageToken;
-      this.videoItems.push(...ret.items);
+      try {
+        this.isLoading = true;
+        const ret: SearchResult = await this.client.search(this.keyword, this.nextPageToken);
+        if (ret.nextPageToken) this.nextPageToken = ret.nextPageToken;
+        this.videoItems.push(...ret.items);
+      } finally {
+        this.isLoading = false;
+      }
     },
     handleOnReachEnd: async function (): Promise<void> {
       await this.getSerchResult();
