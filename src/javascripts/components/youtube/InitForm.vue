@@ -11,13 +11,17 @@
         <p class="init-form-item-label">
           YouTube Data API KEY
         </p>
-        <input v-model="apiKey" type="text" name="apiKey" />
+        <input v-model="apiKey" class="full" type="text" name="apiKey" />
       </div>
       <div class="init-form-item">
         <p class="init-form-item-label">
           Keyword
         </p>
-        <input v-model="keyword" type="text" name="keyword" />
+        <input v-model="keyword" class="full" type="text" name="keyword" />
+      </div>
+      <div class="init-form-item">
+        <input v-model="rememberMe" type="checkbox" name="rememberMe" />
+        入力内容をブラウザに保存する
       </div>
       <div class="init-form-item submit">
         <button :disabled="!submitable" @click="submit">
@@ -33,6 +37,18 @@ import { InitFormType } from "@js/types/youtubeApi";
 
 export default Vue.extend({
   props: {
+    initApiKey: {
+      type: String,
+      default: "",
+    },
+    initKeyword: {
+      type: String,
+      default: "",
+    },
+    initRememberMe: {
+      type: Boolean,
+      default: false,
+    },
     submitable: {
       type: Boolean,
       required: true,
@@ -40,8 +56,9 @@ export default Vue.extend({
   },
   data(): InitFormType {
     return {
-      apiKey: "",
-      keyword: "",
+      apiKey: this.initApiKey,
+      keyword: this.initKeyword,
+      rememberMe: this.initRememberMe,
     };
   },
   computed: {
@@ -51,7 +68,11 @@ export default Vue.extend({
   },
   methods: {
     submit: function (): void {
-      this.$emit("submit", { apiKey: this.apiKey, keyword: this.keyword } as InitFormType);
+      this.$emit("submit", {
+        apiKey: this.apiKey,
+        keyword: this.keyword,
+        rememberMe: this.rememberMe,
+      } as InitFormType);
     },
   },
 });
@@ -80,7 +101,11 @@ export default Vue.extend({
       border: none;
       border-radius: 0.2em;
       height: 2em;
-      width: 100%;
+      vertical-align: top;
+
+      &.full {
+        width: 100%;
+      }
     }
 
     &.submit {

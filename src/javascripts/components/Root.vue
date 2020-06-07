@@ -11,7 +11,13 @@
       <video-list :video-items="videoItems" @reachEnd="handleOnReachEnd"></video-list>
     </div>
     <div v-else class="root-init">
-      <init-form :submitable="isMobile" @submit="handleOnSubmit"></init-form>
+      <init-form
+        :submitable="isMobile"
+        :init-api-key="initFormObject.apiKey"
+        :init-keyword="initFormObject.keyword"
+        :init-remember-me="initFormObject.rememberMe"
+        @submit="handleOnSubmit"
+      ></init-form>
     </div>
   </div>
 </template>
@@ -25,8 +31,8 @@ import { ApiClient } from "@js/services/youtubeDataApi/apiClient";
 import { InitFormType, SearchResultItem, SearchResult } from "@js/types/youtubeApi";
 
 interface Data {
-  apiKey: string;
-  keyword: string;
+  initFormObject: InitFormType;
+  submitted: boolean;
   nextPageToken: string;
   isLoading: boolean;
   videoItems: SearchResultItem[];
@@ -40,8 +46,8 @@ export default Vue.extend({
   },
   data(): Data {
     return {
-      apiKey: "",
-      keyword: "",
+      initFormObject: { apiKey: "", keyword: "", rememberMe: false },
+      submitted: false,
       isLoading: false,
       nextPageToken: "",
       videoItems: [],
@@ -49,20 +55,24 @@ export default Vue.extend({
   },
   computed: {
     client: function (): ApiClient {
-      return new ApiClient(this.apiKey);
+      return new ApiClient(this.initFormObject.apiKey);
     },
     isPlayable: function (): boolean {
-      return !!this.apiKey;
+      return !!this.initFormObject.apiKey && this.submitted;
     },
     isMobile: function (): boolean {
       return !!navigator.userAgent.match(/iPhone|Android|Mobile/);
     },
   },
+  created: function (): void {
+    const object = JSON.parse(localStorage.getItem("initForm") || "{}");
+    if (object) this.initFormObject = object;
+  },
   methods: {
     getSerchResult: async function (): Promise<void> {
       try {
         this.isLoading = true;
-        const ret: SearchResult = await this.client.search(this.keyword, this.nextPageToken);
+        const ret: SearchResult = await this.client.search(this.initFormObject.keyword, this.nextPageToken);
         if (ret.nextPageToken) this.nextPageToken = ret.nextPageToken;
         this.videoItems.push(...ret.items);
       } finally {
@@ -73,8 +83,9 @@ export default Vue.extend({
       await this.getSerchResult();
     },
     handleOnSubmit: async function (object: InitFormType): Promise<void> {
-      this.apiKey = object.apiKey;
-      this.keyword = object.keyword;
+      this.initFormObject = object;
+      this.submitted = true;
+      if (this.initFormObject.rememberMe) localStorage.setItem("initForm", JSON.stringify(object));
       await this.getSerchResult();
     },
   },

@@ -1,6 +1,7 @@
 export interface InitFormType {
   apiKey: string;
   keyword: string;
+  rememberMe: boolean;
 }
 
 export interface SearchResult {
