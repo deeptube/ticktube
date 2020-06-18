@@ -14,3 +14,9 @@ new Vue({
   el: "#vue-root",
   components: { Root },
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js");
+  });
+}
