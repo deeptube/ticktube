@@ -1,11 +1,16 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+// NOTE: PWA用のプラグイン
+const workBoxWebpackPlugin = require("workbox-webpack-plugin");
+const WebpackPwaManifest = require("webpack-pwa-manifest");
+
 const getEntries = require("./config/webpack/utils/getEntries.js");
 const buildHtmlWebpackPlugins = require("./config/webpack/utils/buildHtmlWebpackPlugins.js");
 
 const JAVASCRIPT_ENTRY_PATH = "./src/javascripts/entries/";
 const HTML_TEMPLATE_PATH = "./src/pages/";
+const OUTPUT_PATH = `${__dirname}/dist`;
 const entries = getEntries(JAVASCRIPT_ENTRY_PATH);
 
 module.exports = {
@@ -21,14 +26,14 @@ module.exports = {
   // デフォルトはdist/main.js
   output: {
     // 出力先のディレクトリ
-    path: `${__dirname}/dist`,
+    path: OUTPUT_PATH,
     // 出力先のファイル
     filename: "[name]-[hash].js",
   },
   // webpack-dev-server用の設定
   devServer: {
     // webpackのoutput pathを指定
-    contentBase: `${__dirname}/dist`,
+    contentBase: OUTPUT_PATH,
     // 実行時にブラウザを開く
     open: true,
   },
@@ -108,5 +113,17 @@ module.exports = {
     new CleanWebpackPlugin(),
     // vue-loaderの有効化
     new VueLoaderPlugin(),
+    // PWA用のservice-worker.jsを生成
+    new workBoxWebpackPlugin.GenerateSW({ swDest: OUTPUT_PATH + "/service-worker.js" }),
+    // NOTE: 公式readmeがsnamecaseになっていたのでdisable
+    // https://github.com/arthurbergmz/webpack-pwa-manifest
+    /* eslint-disable @typescript-eslint/camelcase */
+    new WebpackPwaManifest({
+      short_name: "ticktube",
+      name: "Tick Tube",
+      display: "standalone",
+      start_url: "index.html",
+    }),
+    /* eslint-enable @typescript-eslint/camelcase */
   ],
 };
