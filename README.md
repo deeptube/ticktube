@@ -1,6 +1,6 @@
 # TickTube
 
-YouTubeの動画をTickTokライクなUIで閲覧できるViewer :tv:
+YouTubeの動画をスワイプして閲覧できるViewer :tv:
 
 ![demo](https://github.com/Madogiwa0124/ticktube/blob/master/assets/demo.gif)
 
