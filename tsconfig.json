@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es5", // TSはECMAScript 5に変換
-    "module": "es2015", // TSのモジュールはES Modulesとして出力
+    "target": "ES6", // TSはECMAScript 6に変換
+    "module": "ES6", // TSのモジュールはES6 Modulesとして出力
     // import Vue from 'vue' の書き方を許容する
     "allowSyntheticDefaultImports": true,
     "strict": true,

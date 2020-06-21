@@ -61,6 +61,9 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env"],
+            // NOTE: デフォルトで使うとES2015(ES6)に変換してくれる
+            // Sidenote, if no targets are specified, @babel/preset-env will transform all ECMAScript 2015+ code by default.
+            // https://babeljs.io/docs/en/babel-preset-env
             plugins: [
               // NOTE: `ReferenceError regeneratorRuntime is not defined`が発生していたので解消
               // https://github.com/babel/babel/issues/9849#issuecomment-612595221
