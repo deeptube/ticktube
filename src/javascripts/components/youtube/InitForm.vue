@@ -2,7 +2,7 @@
   <div class="init-form">
     <h1>TickTube</h1>
     <div class="init-form-info">
-      YouTube動画をTickTok風に閲覧できるViewerです。<br />
+      YouTube動画をスワイプして閲覧できるViewerです。<br />
       YouTube Data API KEYと検索するKeyword(任意)を入力して、ご利用ください。<br />
       モバイルにしか対応していません🙇‍♂️
     </div>
@@ -25,7 +25,7 @@
       </div>
       <div class="init-form-item submit">
         <button :disabled="!submitable" @click="submit">
-          TickTok Likeに見る🚀
+          スワイプで見る🚀
         </button>
       </div>
     </form>
